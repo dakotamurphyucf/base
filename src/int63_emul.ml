@@ -249,9 +249,12 @@ module T = struct
     | _ -> invalid_str str
   ;;
 
+#if BS then
+#else
   let bswap16 t = wrap_modulo (Int64.bswap16 (unwrap t))
   let bswap32 t = wrap_modulo (Int64.bswap32 (unwrap t))
   let bswap48 t = wrap_modulo (Int64.bswap48 (unwrap t))
+#end
 end
 
 include T

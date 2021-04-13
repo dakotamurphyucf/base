@@ -146,10 +146,12 @@ let to_nativeint_exn = to_nativeint
 let pow b e = of_int_exn (Int_math.Private.int_pow (to_int_exn b) (to_int_exn e))
 let ( ** ) b e = pow b e
 
+#if BS then
+#else
 external bswap32 : t -> t = "%bswap_int32"
 
 let bswap16 x = Caml.Int32.shift_right_logical (bswap32 x) 16
-
+#end
 module Pow2 = struct
   open! Import
   open Int32_replace_polymorphic_compare
@@ -193,6 +195,25 @@ module Pow2 = struct
     x land Caml.Int32.pred x = Caml.Int32.zero
   ;;
 
+#if BS then
+
+  (* C stubs for int clz and ctz to use the CLZ/BSR/CTZ/BSF instruction where possible *)
+  external clz
+    :  (* Note that we pass the tagged int here. See int_math_stubs.c for details on why
+          this is correct. *)
+     (int32[@unboxed])
+    -> (int[@untagged])
+    = "Base_int_math_int32_clz"
+  [@@noalloc][@@bs.module "./base_int_math"]
+
+  external ctz
+    :   (int32[@unboxed])
+    -> (int[@untagged])
+    = "Base_int_math_int32_ctz"
+  [@@noalloc][@@bs.module "./base_int_math"]
+
+#else
+  
   (* C stubs for int32 clz and ctz to use the CLZ/BSR/CTZ/BSF instruction where possible *)
   external clz
     :  (int32[@unboxed])
@@ -205,6 +226,8 @@ module Pow2 = struct
     -> (int[@untagged])
     = "Base_int_math_int32_ctz" "Base_int_math_int32_ctz_unboxed"
   [@@noalloc]
+#end
+
 
   (** Hacker's Delight Second Edition p106 *)
   let floor_log2 i =

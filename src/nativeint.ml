@@ -293,5 +293,7 @@ include O
    here so that efficient versions of the comparison functions are exported by
    this module. *)
 include Nativeint_replace_polymorphic_compare
-
+#if BS then
+#else
 external bswap : t -> t = "%bswap_native"
+#end

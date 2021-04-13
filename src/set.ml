@@ -15,6 +15,7 @@
 
 open! Import
 include Set_intf
+module Array = Array0
 
 let with_return = With_return.with_return
 

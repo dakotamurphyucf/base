@@ -32,7 +32,7 @@ module Builtin : sig
   val compare_array : 'a compare -> 'a array compare
   val compare_list : 'a compare -> 'a list compare
   val compare_option : 'a compare -> 'a option compare
-  val compare_ref : 'a compare -> 'a ref compare
+  val compare_ref : 'a compare -> 'a Import0.ref compare
   val equal_bool : bool equal
   val equal_char : char equal
   val equal_float : float equal
@@ -45,5 +45,5 @@ module Builtin : sig
   val equal_array : 'a equal -> 'a array equal
   val equal_list : 'a equal -> 'a list equal
   val equal_option : 'a equal -> 'a option equal
-  val equal_ref : 'a equal -> 'a ref equal
+  val equal_ref : 'a equal -> 'a Import0.ref equal
 end

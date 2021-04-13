@@ -18,15 +18,13 @@
 open! Import0
 module Sys = Sys0
 
-module String = struct
-  external get : string -> int -> char = "%string_safe_get"
-  external length : string -> int = "%string_length"
-  external unsafe_get : string -> int -> char = "%string_unsafe_get"
 
-  include Bytes_set_primitives
-end
+external get : string -> int -> char = "%string_safe_get"
+external length : string -> int = "%string_length"
+external unsafe_get : string -> int -> char = "%string_unsafe_get"
 
-include String
+include Bytes_set_primitives
+
 
 let max_length = Sys.max_string_length
 let ( ^ ) = ( ^ )

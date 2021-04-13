@@ -13,16 +13,16 @@ module Sys = Sys0
 
 let invalid_argf = Printf.invalid_argf
 
-module Array = struct
-  external create : int -> 'a -> 'a array = "caml_make_vect"
-  external get : 'a array -> int -> 'a = "%array_safe_get"
-  external length : 'a array -> int = "%array_length"
-  external set : 'a array -> int -> 'a -> unit = "%array_safe_set"
-  external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
-  external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
+module Array_int = struct
+external create : int -> 'a -> 'a array = "caml_make_vect"
+external get : 'a array -> int -> 'a = "%array_safe_get"
+external length : 'a array -> int = "%array_length"
+external set : 'a array -> int -> 'a -> unit = "%array_safe_set"
+external unsafe_get : 'a array -> int -> 'a = "%array_unsafe_get"
+external unsafe_set : 'a array -> int -> 'a -> unit = "%array_unsafe_set"
 end
 
-include Array
+include Array_int
 
 let max_length = Sys.max_array_length
 
@@ -53,8 +53,8 @@ let mapi t ~f = Caml.Array.mapi t ~f
 let stable_sort t ~compare = Caml.Array.stable_sort t ~cmp:compare
 
 let swap t i j =
-  let elt_i = t.(i) in
-  let elt_j = t.(j) in
+  let elt_i = get t i in
+  let elt_j = get t j in
   unsafe_set t i elt_j;
   unsafe_set t j elt_i
 ;;

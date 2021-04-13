@@ -3,6 +3,7 @@ module Array = Array0
 module Bytes = Bytes0
 include String0
 
+module String = Caml.String
 let invalid_argf = Printf.invalid_argf
 let raise_s = Error.raise_s
 let stage = Staged.stage

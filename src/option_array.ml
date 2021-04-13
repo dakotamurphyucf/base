@@ -30,8 +30,10 @@ module Cheap_option = struct
     val value_exn : 'a t -> 'a
     val value_unsafe : 'a t -> 'a
   end = struct
-    type +'a t
 
+    type +'a t
+    let none_substitute : _ t = [%bs.raw {|{unique: true}|}]
+(* #if BS then
     (* Being a pointer, no one outside this module can construct a value that is
        [phys_same] as this one.
 
@@ -41,8 +43,10 @@ module Cheap_option = struct
 
        this code is duplicated in Moption, and if we find yet another place where we want
        it we should reconsider making it shared. *)
+    let none_substitute : _ t = [%bs.raw {|{unique: true}|}]
+#else
     let none_substitute : _ t = Caml.Obj.obj (Caml.Obj.new_block Caml.Obj.abstract_tag 1)
-
+#end *)
     let none : _ t =
       (* The number was produced by
          [< /dev/urandom tr -c -d '1234567890abcdef' | head -c 16].

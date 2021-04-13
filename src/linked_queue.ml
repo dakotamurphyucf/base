@@ -1,6 +1,6 @@
 open! Import
 include Linked_queue0
-
+module Array = Array0
 let enqueue t x = Linked_queue0.push x t
 let dequeue t = if is_empty t then None else Some (Linked_queue0.pop t)
 let dequeue_exn = Linked_queue0.pop
@@ -114,7 +114,7 @@ let of_list list =
 
 let of_array array =
   let t = create () in
-  Array.iter array ~f:(fun x -> enqueue t x);
+  Array0.iter array ~f:(fun x -> enqueue t x);
   t
 ;;
 

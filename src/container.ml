@@ -91,7 +91,7 @@ let to_array ~length ~iter c =
   iter c ~f:(fun x ->
     if !i = 0 then array := Array.create ~len:(length c) x;
     !array.(!i) <- x;
-    incr i);
+    i := !i + 1);
   !array
 ;;
 

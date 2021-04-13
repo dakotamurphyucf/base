@@ -345,7 +345,10 @@ module type Int_without_module_types = sig
   val of_int64_trunc : int64 -> t
   val of_nativeint_trunc : nativeint -> t
 
-  (** {2 Byte swap operations}
+
+#if BS then
+#else
+    (** {2 Byte swap operations}
 
       Byte swap operations reverse the order of bytes in an integer. For
       example, {!Int32.bswap32} reorders the bottom 32 bits (or 4 bytes),
@@ -360,6 +363,7 @@ module type Int_without_module_types = sig
   (** Byte swaps bottom 16 bits (2 bytes). The values of the remaining bytes
       are undefined. *)
   val bswap16 : t -> t
+#end
 
   (**/**)
 

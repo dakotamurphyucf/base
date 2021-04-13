@@ -16,7 +16,8 @@ let neg_infinity = Caml.neg_infinity
 let max_finite_value = Caml.max_float
 let epsilon_float = Caml.epsilon_float
 let classify_float = Caml.classify_float
-let abs_float = Caml.abs_float
+let abs_float f = if f < 0. then f *. -1. else f
+
 let ( ** ) = Caml.( ** )
 
 (* The bits of INRIA's [Pervasives] that we just want to expose in [Float]. Most are

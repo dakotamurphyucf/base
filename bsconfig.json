@@ -1,0 +1,27 @@
+{
+  "name": "base",
+  "namespace": "base",
+  "sources": [
+    "temp", "src",
+    {
+      "dir": "md5",
+      "subdirs": ["src"]
+    },
+    {
+      "dir": "hash_types",
+      "subdirs": ["src"]
+    }],
+  "bs-dependencies": [
+    "sexplib0","shadow_stdlib", "caml"
+  ],
+  "refmt": 3,
+  "reason": {
+    "react-jsx": 3
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "generate-merlin": true
+}

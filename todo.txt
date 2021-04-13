@@ -1,0 +1,7 @@
+hash_types/
+    implement stubs for bs
+        use https://github.com/ocsigen/js_of_ocaml/blob/master/runtime/hash.js as starting point to implement the stubs
+src/
+    implement js runtime for bs
+    select-bytes-set-primitives/
+        manually create the bytes_set_primitives.ml file

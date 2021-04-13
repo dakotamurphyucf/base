@@ -1,7 +1,7 @@
 open! Import
 include Array0
 module Int = Int0
-
+module Array = Array_int
 type 'a t = 'a array [@@deriving_inline compare, sexp, sexp_grammar]
 
 let compare : 'a. ('a -> 'a -> int) -> 'a t -> 'a t -> int = compare_array

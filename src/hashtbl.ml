@@ -1,6 +1,6 @@
 open! Import
 include Hashtbl_intf
-
+module Array = Array0
 module type Key = Key.S
 
 let with_return = With_return.with_return

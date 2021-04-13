@@ -1,0 +1,18 @@
+{
+  "name": "shadow_stdlib",
+  "sources": [
+    "src"],
+  "bs-dependencies": [
+    "caml"
+  ],
+  "refmt": 3,
+  "reason": {
+    "react-jsx": 3
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "generate-merlin": true
+}

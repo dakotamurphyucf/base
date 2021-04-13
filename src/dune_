@@ -1,7 +1,7 @@
-(rule (targets bytes_set_primitives.ml)
- (deps (:first_dep select-bytes-set-primitives/select.ml))
- (action
-  (run %{ocaml} %{first_dep} -ocaml-version %{ocaml_version} -o %{targets})))
+; (rule (targets bytes_set_primitives.ml)
+;  (deps (:first_dep select-bytes-set-primitives/select.ml))
+;  (action
+;   (run %{ocaml} %{first_dep} -ocaml-version %{ocaml_version} -o %{targets})))
 
 (rule (targets pow_overflow_bounds.ml)
  (deps (:first_dep ../generate/generate_pow_overflow_bounds.exe))
@@ -9,8 +9,10 @@
 
 (library (name base) (public_name base)
  (libraries base_internalhash_types caml sexplib0 shadow_stdlib)
- (c_flags :standard -D_LARGEFILE64_SOURCE (:include mpopcnt.sexp))
- (c_names exn_stubs int_math_stubs hash_stubs am_testing)
+  (foreign_stubs
+  (language c)
+  (names exn_stubs int_math_stubs hash_stubs am_testing)
+  (flags :standard -D_LARGEFILE64_SOURCE (:include mpopcnt.sexp)))
  (preprocess no_preprocessing)
  (lint
   (pps ppx_base ppx_base_lint -check-doc-comments -type-conv-keep-w32=both
@@ -20,4 +22,4 @@
 (rule (targets mpopcnt.sexp)
  (action (run ./discover/discover.exe -o %{targets})))
 
-(ocamllex hex_lexer)
+; (ocamllex hex_lexer)

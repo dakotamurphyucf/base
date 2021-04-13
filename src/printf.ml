@@ -1,6 +1,7 @@
 open! Import0
-include Caml.Printf
 
+
+include Caml.Printf
 (** failwith, invalid_arg, and exit accepting printf's format. *)
 
 let failwithf fmt = ksprintf (fun s () -> failwith s) fmt

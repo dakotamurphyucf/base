@@ -7,7 +7,7 @@ include (
     module type of struct
     include Shadow_stdlib
   end
-  with type 'a ref := 'a ref
+  with type 'a ref := 'a Caml.ref
   with type ('a, 'b, 'c) format := ('a, 'b, 'c) format
   with type ('a, 'b, 'c, 'd) format4 := ('a, 'b, 'c, 'd) format4
   with type ('a, 'b, 'c, 'd, 'e, 'f) format6 := ('a, 'b, 'c, 'd, 'e, 'f) format6
@@ -133,7 +133,13 @@ external not : bool -> bool = "%boolnot"
 
 (* We use [Obj.magic] here as other implementations generate a conditional jump and the
    performance difference is noticeable. *)
+
+#if BS then
+let bool_to_int (x : bool) : int = if x then 1 else 0
+#else
 let bool_to_int (x : bool) : int = Caml.Obj.magic x
+#end
+
 
 (* This need to be declared as an external for the warnings to work properly *)
 external ignore : _ -> unit = "%ignore"
@@ -343,8 +349,8 @@ let snd = Caml.snd
 external raise : exn -> _ = "%raise"
 
 let phys_equal = Caml.( == )
-let decr = Caml.decr
-let incr = Caml.incr
+let decr = Stdlib.decr
+let incr = Stdlib.incr
 
 (* used by sexp_conv, which float0 depends on through option *)
 let float_of_string = Caml.float_of_string

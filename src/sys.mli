@@ -19,7 +19,7 @@ val argv : string array
 
 (** [interactive] is set to [true] when being executed in the [ocaml] REPL, and [false]
     otherwise. *)
-val interactive : bool ref
+val interactive : bool Stdlib__no_aliases.ref
 
 (** [os_type] describes the operating system that the OCaml program is running on.  Its
     value is one of ["Unix"], ["Win32"], or ["Cygwin"]. When running in JavaScript, it is

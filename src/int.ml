@@ -154,8 +154,8 @@ let ( ~- ) = neg
 
 (* note that rem is not same as % *)
 let rem a b = a mod b
-let incr = Caml.incr
-let decr = Caml.decr
+let incr = incr
+let decr = decr
 let shift_right a b = a asr b
 let shift_right_logical a b = a lsr b
 let shift_left a b = a lsl b
@@ -211,7 +211,25 @@ module Pow2 = struct
     x land (x - 1) = 0
   ;;
 
+#if BS then
+
   (* C stubs for int clz and ctz to use the CLZ/BSR/CTZ/BSF instruction where possible *)
+  external clz
+    :  (* Note that we pass the tagged int here. See int_math_stubs.c for details on why
+          this is correct. *)
+    int
+    -> (int[@untagged])
+    = "Base_int_math_int_clz"
+  [@@noalloc][@@bs.module "./base_int_math"]
+
+  external ctz
+    :  (int[@untagged])
+    -> (int[@untagged])
+    = "Base_int_math_int_ctz"
+  [@@noalloc][@@bs.module "./base_int_math"]
+
+#else
+  
   external clz
     :  (* Note that we pass the tagged int here. See int_math_stubs.c for details on why
           this is correct. *)
@@ -225,7 +243,7 @@ module Pow2 = struct
     -> (int[@untagged])
     = "Base_int_math_int_ctz" "Base_int_math_int_ctz_untagged"
   [@@noalloc]
-
+#end
   (** Hacker's Delight Second Edition p106 *)
   let floor_log2 i =
     if i <= 0
@@ -278,8 +296,10 @@ module O = struct
 
   include F
 
+#if BS then
+#else
   external bswap16 : int -> int = "%bswap16"
-
+#end
   (* These inlined versions of (%), (/%), and (//) perform better than their functorized
      counterparts in [F] (see benchmarks below).
 

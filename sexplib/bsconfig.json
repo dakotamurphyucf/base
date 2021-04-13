@@ -1,0 +1,18 @@
+{
+  "name": "sexplib0",
+  "namespace": true,
+  "sources": [
+    "."],
+  "bs-dependencies": [
+  ],
+  "refmt": 3,
+  "reason": {
+    "react-jsx": 3
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js",
+  "generate-merlin": true
+}

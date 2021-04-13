@@ -43,6 +43,10 @@ val bits_of_float : float -> t
     regular 64-bit OCaml float. *)
 val float_of_bits : t -> float
 
+
+
+#if BS then
+#else
 (** {2 Byte swap operations}
 
     See {{!modtype:Int.Int_without_module_types}[Int]'s byte swap section} for
@@ -55,6 +59,6 @@ val float_of_bits : t -> float
 
     The x86 instruction sequence that demonstrates the overhead is in
     [base/bench/bench_int.ml] *)
-
-val bswap16 : t -> t
-val bswap32 : t -> t
+ val bswap16 : t -> t
+ val bswap32 : t -> t
+#end

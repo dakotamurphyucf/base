@@ -66,21 +66,24 @@ let of_float f =
       ()
 ;;
 
-let ( ** ) b e = pow b e
+let ( ** ) b e = pow b e;
 
-external bswap64 : t -> t = "%bswap_int64"
+#if BS then
+#else
+  external bswap64 : t -> t = "%bswap_int64"
 
-let[@inline always] bswap16 x = Caml.Int64.shift_right_logical (bswap64 x) 48
+  let[@inline always] bswap16 x = Caml.Int64.shift_right_logical (bswap64 x) 48
 
-let[@inline always] bswap32 x =
-  (* This is strictly better than coercing to an int32 to perform byteswap. Coercing
-     from an int32 will add unnecessary shift operations to sign extend the number
-     appropriately.
-  *)
-  Caml.Int64.shift_right_logical (bswap64 x) 32
-;;
+  let[@inline always] bswap32 x =
+    (* This is strictly better than coercing to an int32 to perform byteswap. Coercing
+      from an int32 will add unnecessary shift operations to sign extend the number
+      appropriately.
+    *)
+    Caml.Int64.shift_right_logical (bswap64 x) 32
+  ;;
 
-let[@inline always] bswap48 x = Caml.Int64.shift_right_logical (bswap64 x) 16
+  let[@inline always] bswap48 x = Caml.Int64.shift_right_logical (bswap64 x) 16
+#end
 
 include Comparable.With_zero (struct
     include T
@@ -187,18 +190,39 @@ module Pow2 = struct
     x land Caml.Int64.pred x = Caml.Int64.zero
   ;;
 
+#if BS then
+
   (* C stubs for int clz and ctz to use the CLZ/BSR/CTZ/BSF instruction where possible *)
   external clz
-    :  (int64[@unboxed])
-    -> (int[@untagged])
-    = "Base_int_math_int64_clz" "Base_int_math_int64_clz_unboxed"
-  [@@noalloc]
+    :  (* Note that we pass the tagged int here. See int_math_stubs.c for details on why
+          this is correct. *)
+    (int64[@unboxed])
+  -> (int[@untagged])
+    = "Base_int_math_int64_clz"
+  [@@noalloc][@@bs.module "./base_int_math"]
 
   external ctz
-    :  (int64[@unboxed])
-    -> (int[@untagged])
-    = "Base_int_math_int64_ctz" "Base_int_math_int64_ctz_unboxed"
-  [@@noalloc]
+  :  (int64[@unboxed])
+  -> (int[@untagged])
+    = "Base_int_math_int64_ctz"
+  [@@noalloc][@@bs.module "./base_int_math"]
+
+#else
+  
+  (* C stubs for int32 clz and ctz to use the CLZ/BSR/CTZ/BSF instruction where possible *)  (* C stubs for int clz and ctz to use the CLZ/BSR/CTZ/BSF instruction where possible *)
+  external clz
+  :  (int64[@unboxed])
+  -> (int[@untagged])
+  = "Base_int_math_int64_clz" "Base_int_math_int64_clz_unboxed"
+[@@noalloc]
+
+external ctz
+  :  (int64[@unboxed])
+  -> (int[@untagged])
+  = "Base_int_math_int64_ctz" "Base_int_math_int64_ctz_unboxed"
+[@@noalloc]
+#end
+
 
   (** Hacker's Delight Second Edition p106 *)
   let floor_log2 i =

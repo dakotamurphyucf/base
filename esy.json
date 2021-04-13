@@ -1,0 +1,23 @@
+{
+    "dependencies": {
+        "@opam/ocaml-lsp-server": "*",
+        "@opam/ocamlfind-secondary": "*",
+        "@opam/reason": "*",
+        "ocaml": "4.12.x",
+        "bs-platform": "*"
+    },
+    "resolutions": {
+        "bs-platform": "link:../bucklescript",
+        "ocaml": "melange-re/ocaml#75f22c8",
+        "@opam/ocaml-lsp-server": "ocaml/ocaml-lsp:ocaml-lsp-server.opam#bb438db"
+    },
+    "esy": {
+      "buildsInSource": "unsafe",
+      "build": [
+        "ln -sfn #{bs-platform.install} node_modules/bs-platform"
+      ]
+    },
+    "installConfig": {
+      "pnp": false
+    }
+  }

@@ -1,12 +1,13 @@
 open! Import
+module Array = Array0
 
 let invalid_argf = Printf.invalid_argf
 let negative_exponent () = Printf.invalid_argf "exponent can not be negative" ()
 let overflow () = Printf.invalid_argf "integer overflow in pow" ()
 
 (* To implement [int64_pow], we use C code rather than OCaml to eliminate allocation. *)
-external int_math_int_pow : int -> int -> int = "Base_int_math_int_pow_stub" [@@noalloc]
-external int_math_int64_pow : int64 -> int64 -> int64 = "Base_int_math_int64_pow_stub"
+external int_math_int_pow : int -> int -> int = "Base_int_math_int_pow_stub" [@@noalloc] [@@bs.module "./base_int_math"]
+external int_math_int64_pow : int64 -> int64 -> int64 = "Base_int_math_int64_pow_stub" [@@bs.module "./base_int_math"]
 
 let int_pow base exponent =
   if exponent < 0 then negative_exponent ();
